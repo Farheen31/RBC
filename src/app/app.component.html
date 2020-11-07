@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="title">{{title}}</div>
+  <section class="clock-container">
+    <article class="analog-clock">
+      <div class="hours" [ngStyle]="hourHandStyle"></div>
+      <div class="minutes" [ngStyle]="minuteHandStyle"></div>
+      <div class="seconds-container">
+        <div class="seconds" [ngStyle]="secondHandStyle"></div>
+      </div>
+    </article>
+
+    <article class="digital-clock">
+      {{format(hour)}} : {{format(minute)}} : {{format(second)}}
+    </article>
+  </section>
+  <section class="input-container">
+    <input type="time" id="cutomTime" name="cutomTime" step=1 value="">
+    <button (click)="onSyncClocks()" id="sync">Sync</button>
+  </section>
+
+</div>
