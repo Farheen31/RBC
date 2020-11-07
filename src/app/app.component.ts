@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
   hourHandStyle;
   minuteHandStyle;
   secondHandStyle;
-  hh1: any; mm1: any; ss1: any;
 
   ngOnInit() {
     this.getTime();
@@ -24,44 +23,36 @@ export class AppComponent implements OnInit {
 
 
   getTime() {
+    this.date = new Date();
     setInterval(() => {
-      this.date = new Date();
       this.hour = this.date.getHours();
       this.minute = this.date.getMinutes();
       this.second = this.date.getSeconds();
-      this.animateAnalogClock();
+      this.onSyncClocks();
     }, 1000);
   }
 
   animateAnalogClock() {
     this.hourHandStyle = { transform: `translate3d(-50%, 0, 0) rotate(${(this.hour * 30) + (this.minute * 0.5) + (this.second * (0.5 / 60))}deg)` };
-
     this.minuteHandStyle = { transform: `translate3d(-50%, 0, 0) rotate(${(this.minute * 6) + (this.second * 0.1)}deg)` };
-
     this.secondHandStyle = { transform: `translate3d(-50%, 0, 0) rotate(${this.second * 6}deg)` };
   }
 
-  format(num: number) {
-    return (num + '').length === 1 ? '0' + num : num + '';
-  }
-
   onSyncClocks() {
-    let inputValue = (<HTMLInputElement>document.getElementById("cutomTime")).value;
+    let inputValue = (<HTMLInputElement>document.getElementById("customTime")).value || this.date;
     this.customtime = moment(inputValue, 'hh:mm:ss').toDate();
-    let current = new Date();
-    let diff: any = current.getTime() - this.date.getTime();
+    let diff: any = new Date().getTime() - this.date.getTime();
 
     //add that difference to the offset time
     this.customtime.setMilliseconds(this.customtime.getMilliseconds() + diff);
 
-    this.hh1 = this.customtime.getHours();
-    this.mm1 = this.customtime.getMinutes();
-    this.ss1 = this.customtime.getSeconds();
-    this.hour = + this.hh1;
-    this.minute = + this.mm1;
-    this.second = + this.ss1;
+    this.hour = + this.customtime.getHours();
+    this.minute = + this.customtime.getMinutes();
+    this.second = + this.customtime.getSeconds();
 
+    var currentTime = this.hour + ":" + this.minute + ":" + this.second;
 
+    (<HTMLInputElement>document.getElementById("timer")).innerHTML = currentTime;
     this.animateAnalogClock();
   }
 }

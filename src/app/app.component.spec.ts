@@ -1,31 +1,41 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let element: HTMLElement;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
   }));
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'sync-clocks'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('sync-clocks');
+  it(`should have as title 'Sync Clocks'`, () => {
+    expect(component.title).toEqual('Sync Clocks');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('sync-clocks app is running!');
+  it("mocks the Date object and sets it to a given time", function() {
+    jasmine.clock().install();
+
+    var baseTime = new Date();
+    jasmine.clock().mockDate(baseTime);
+  
+    jasmine.clock().tick(50);
+    expect(new Date().getTime()).toEqual(baseTime.getTime() + 50);
+
+    jasmine.clock().uninstall();
+
   });
 });
